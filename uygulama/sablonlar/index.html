@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>SmartLead AI — Karşılama Sayfası (Yerel Test)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#0d1117; color:#e6edf3; max-width:700px; margin:40px auto; padding:0 20px; }
+  h1 { color:#2ecc71; }
+  #kutu { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:16px; margin-top:20px; }
+  #cevap { white-space:pre-wrap; min-height:60px; margin-bottom:12px; }
+  input, button { padding:10px; border-radius:8px; border:1px solid #333; }
+  input { width:70%; background:#161b22; color:#fff; }
+  button { background:#2ecc71; border:none; cursor:pointer; font-weight:bold; }
+</style>
+</head>
+<body>
+  <h1>SmartLead AI — Yerel Test Sayfası</h1>
+  <p>Bu sayfa sadece backend'i tarayıcıdan hızlıca test etmek içindir. Gerçek arayüzünüz Wix Studio üzerinde olacak.</p>
+  <div id="kutu">
+    <div id="cevap">Merhaba! Bir soru sorun...</div>
+    <input id="inputMesaj" type="text" placeholder="Sorunuzu yazın...">
+    <button id="btnSor">Sor</button>
+  </div>
+
+  <script>
+    let gecmis = [];
+    document.getElementById('btnSor').addEventListener('click', async () => {
+      const mesaj = document.getElementById('inputMesaj').value;
+      if (!mesaj) return;
+      const cevapKutusu = document.getElementById('cevap');
+      cevapKutusu.textContent = 'Yanıt bekleniyor...';
+      const yanit = await fetch('/api/sohbet', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mesaj, gecmis })
+      });
+      const veri = await yanit.json();
+      cevapKutusu.textContent = veri.basari ? veri.cevap : ('Hata: ' + veri.hata);
+      if (veri.basari) {
+        gecmis.push({ role: 'user', content: mesaj });
+        gecmis.push({ role: 'assistant', content: veri.cevap });
+      }
+    });
+  </script>
+</body>
+</html>

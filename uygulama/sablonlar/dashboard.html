@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>SmartLead AI — Yönetim Paneli (Yerel Test)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#0d1117; color:#e6edf3; max-width:900px; margin:40px auto; padding:0 20px; }
+  h1 { color:#2ecc71; }
+  table { width:100%; border-collapse: collapse; margin-top:20px; }
+  th, td { text-align:left; padding:10px; border-bottom:1px solid #333; }
+  th { color:#8b949e; }
+</style>
+</head>
+<body>
+  <h1>Müşteri Adayı Yönetim Paneli</h1>
+  <p>Toplam kayıt: {{ adaylar|length }}</p>
+  <table>
+    <tr><th>İsim</th><th>Telefon</th><th>Mesaj</th><th>Tarih</th></tr>
+    {% for aday in adaylar %}
+    <tr>
+      <td>{{ aday['isim'] }}</td>
+      <td>{{ aday['telefon'] }}</td>
+      <td>{{ aday['mesaj'] }}</td>
+      <td>{{ aday['olusturulma_tarihi'] }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">Henüz kayıtlı lead bulunmuyor.</td></tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
